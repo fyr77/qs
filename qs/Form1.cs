@@ -14,15 +14,12 @@ namespace qs
 		public Form1()
         {
             InitializeComponent();
-			StartServer();
+			if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "index.html")))
+				StartServer(AppDomain.CurrentDomain.BaseDirectory);
         }
-		void StartServer()
+		void StartServer(string baseDir)
 		{
-			if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "index.html")))
-			{
-				MessageBox.Show("File index.html not found in current directory!");
-				Environment.Exit(1);
-			}
+			label1.Text = "Directory is being served at\nhttp://localhost:25577";
 
 			if (Directory.Exists(tmpPath))
 			{
@@ -39,7 +36,7 @@ namespace qs
 			ZipFile.ExtractToDirectory(zipPath, extractPath);
 			File.Move(Path.Combine(tmpPath, "tiny.exe"), Path.Combine(tmpPath, "tinywebserver.exe"));
 
-			string args = "\"" + AppDomain.CurrentDomain.BaseDirectory + "\" 25577";
+			string args = "\"" + baseDir + "\" 25577";
 			using (Process process = new Process())
             {
 				// Configure the process using the StartInfo properties.
@@ -49,9 +46,8 @@ namespace qs
 				process.Start();
 			}
 		}
-		void MainFormFormClosing(object sender, FormClosingEventArgs e)
-		{
-			ShowMessageBox("Shutting down server...", "Please wait.");
+		void Cleanup()
+        {
 			foreach (var process in Process.GetProcessesByName("tinywebserver"))
 			{
 				process.Kill();
@@ -61,20 +57,38 @@ namespace qs
 			{
 				Directory.Delete(tmpPath, true);
 			}
+
 			Environment.Exit(0);
 		}
-		void ShowMessageBox(string text, string caption)
-		{
-			Thread t = new Thread(() => MyMessageBox(text, caption));
-			t.Start();
-		}
-		void MyMessageBox(object text, object caption)
-		{
-			MessageBox.Show((string)text, (string)caption);
-		}
-        private void buttonOpen_Click(object sender, EventArgs e)
+        private void ButtonOpen_Click(object sender, EventArgs e)
         {
 			Process.Start("http://localhost:25577").Dispose();
+		}
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+			label1.Text = "Shutting down server...";
+			buttonOpen.Enabled = false;
+
+			Thread t = new Thread(() => Cleanup());
+			t.Start();
+		}
+
+        private void Form1_DragOver(object sender, DragEventArgs e)
+        {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Link;
+			else
+				e.Effect = DragDropEffects.None;
+		}
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+			string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+			if (files.Length != 0)
+			{
+				StartServer(new FileInfo(files[0]).Directory.FullName);
+			}
 		}
     }
 }

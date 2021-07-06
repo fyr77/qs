@@ -38,33 +38,38 @@ namespace qs
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 9);
+            this.label1.Location = new System.Drawing.Point(22, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(438, 78);
+            this.label1.Size = new System.Drawing.Size(349, 39);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Directory is being served at\r\nhttp://localhost:25577";
+            this.label1.Text = "Drag index.html here.";
             // 
             // buttonOpen
             // 
-            this.buttonOpen.Location = new System.Drawing.Point(28, 102);
+            this.buttonOpen.Location = new System.Drawing.Point(29, 102);
             this.buttonOpen.Name = "buttonOpen";
             this.buttonOpen.Size = new System.Drawing.Size(431, 39);
             this.buttonOpen.TabIndex = 1;
             this.buttonOpen.Text = "Open in browser";
             this.buttonOpen.UseVisualStyleBackColor = true;
-            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
+            this.buttonOpen.Click += new System.EventHandler(this.ButtonOpen_Click);
             // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 161);
+            this.ClientSize = new System.Drawing.Size(484, 164);
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "QuickServe r3";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
+            this.Text = "QuickServe r4";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.DragOver += new System.Windows.Forms.DragEventHandler(this.Form1_DragOver);
             this.ResumeLayout(false);
             this.PerformLayout();
 
