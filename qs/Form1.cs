@@ -12,6 +12,7 @@ namespace qs
     public partial class Form1 : Form
     {
 		string tmpPath;
+		int port;
 		public Form1()
         {
             InitializeComponent();
@@ -24,7 +25,14 @@ namespace qs
         }
 		void StartServer(string baseDir)
 		{
-			label1.Text = "Directory is being served at\nhttp://localhost:25577";
+			port = GeneratePort();
+			while (!PortBindable(port))
+			{
+				port = GeneratePort();
+			}
+
+			label1.Text = "Directory is being served at\nhttp://localhost:" + port.ToString();
+			buttonOpen.Enabled = true;
 
 			if (Directory.Exists(tmpPath))
 			{
@@ -41,11 +49,6 @@ namespace qs
 			ZipFile.ExtractToDirectory(zipPath, extractPath);
 			File.Move(Path.Combine(tmpPath, "tiny.exe"), Path.Combine(tmpPath, "tinywebserver.exe"));
 
-			int port = GeneratePort();
-            while (!PortBindable(port))
-            {
-				port = GeneratePort();
-			} 
 			string args = "\"" + baseDir + "\" " + port.ToString();
 			using (Process process = new Process())
             {
@@ -106,7 +109,7 @@ namespace qs
 		}
         private void ButtonOpen_Click(object sender, EventArgs e)
         {
-			Process.Start("http://localhost:25577").Dispose();
+			Process.Start("http://localhost:" + port.ToString()).Dispose();
 		}
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
