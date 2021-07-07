@@ -66,7 +66,7 @@ namespace qs
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "QuickServe r4";
+            this.Text = "QuickServe r5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.Form1_DragOver);
