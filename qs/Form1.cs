@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.IO.Compression;
 using System.Net.NetworkInformation;
+using System.Reflection;
 
 namespace qs
 {
@@ -16,6 +17,7 @@ namespace qs
 		public Form1()
         {
             InitializeComponent();
+			this.Text += Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
 
 			Guid tmpGuid = Guid.NewGuid();
 			tmpPath = Path.Combine(Path.GetTempPath(), "qs_temp_" + tmpGuid.ToString());
